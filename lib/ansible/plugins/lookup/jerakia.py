@@ -47,7 +47,8 @@ class Jerakia(object):
         if os.path.isfile(configfile):
             data = open(configfile, "r")
             defined_config = yaml.load(data)
-            combined_config = dict(defaults.items() + defined_config.items())
+            combined_config = defaults.copy()
+            combined_config.update(defined_config)
             return combined_config
         else:
             raise AnsibleError("Unable to find configuration file %s" % configfile)
@@ -77,7 +78,7 @@ class Jerakia(object):
         scope_conf = self.config['scope']
         if not self.config['scope']:
             return {}
-        for key, val in scope_conf.iteritems():
+        for key, val in scope_conf.items():
             metadata_entry = "metadata_%(key)s" % locals()
             scope_value = self.dot_to_dictval(variables, val)
             scope_data[metadata_entry] = scope_value
