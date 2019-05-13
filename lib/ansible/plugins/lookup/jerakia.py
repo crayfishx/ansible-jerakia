@@ -102,7 +102,8 @@ class Jerakia(object):
             'policy': policy,
         }
 
-        params = dict(scope.items() + options.items())
+        params = scope.copy()
+        params.update(options)
         headers = self.headers()
 
         response = requests.get(endpoint_url, params=params, headers=headers)
