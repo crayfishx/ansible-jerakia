@@ -46,7 +46,10 @@ class Jerakia(object):
 
         if os.path.isfile(configfile):
             data = open(configfile, "r")
-            defined_config = yaml.load(data)
+            if callable(getattr(yaml, 'safe_load', None)):
+                defined_config = yaml.safe_load(data)
+            else:
+                defined_config = yaml.load(data)
             combined_config = dict(defaults.items() + defined_config.items())
             return combined_config
         else:
